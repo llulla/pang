@@ -38,7 +38,7 @@ character_y_pos = screen_height - stage_height - character_height
 weapon = pygame.image.load("D:/study_2107/pygames/pygame_basic/weapon.png")
 weapon_size = weapon.get_rect().size
 weapon_widtn = weapon_size[0]
-
+#test
 weapons = []
 weapon_speed = 10
 
