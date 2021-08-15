@@ -1,5 +1,4 @@
 import pygame
-import random
 #####################################################################
 # 기본 초기화 (반드시 해줘야함)
 pygame.init() #초기화 반드시 해줘야함
@@ -64,6 +63,15 @@ balls.append({
 
 char_x =0
 character_speed = 0.1
+
+game_font = pygame.font.Font(None, 40)
+total_time = 30
+start_ticks = pygame.time.get_ticks()
+
+
+
+game_result = "Game Over"
+
 
 # 이벤트 루프
 running = True # 게임이 진행중인가?
@@ -191,7 +199,9 @@ while running:
                         "init_spd_y": ball_speed_y[ball_img_idx + 1]})# y 최초 속도
 
                 break
-
+        else:
+            continue
+        break
 
     # 충돌된 공 or 무기 없애기
     if ball_to_remove > -1:
@@ -202,6 +212,9 @@ while running:
         del weapons[weapon_to_remove]
         weapon_to_remove = -1
 
+    if len(balls) == 0:
+        game_result = "Mission Coomplete"
+        running = False
     # 5. 화면에 그리기
     screen.blit(background, (0, 0))
     
@@ -216,8 +229,21 @@ while running:
 
     screen.blit(stage, (0, screen_height - stage_height))
     screen.blit(character, (character_x_pos, character_y_pos))
+    elapsed_time = (pygame.time.get_ticks() - start_ticks) /1000
+    timer = game_font.render("Time : {}".format(int(total_time - elapsed_time)), True, (255,255,255))
+    screen.blit(timer, (10,10))
+
+    if total_time - elapsed_time <= 0:
+        game_result = "Time over"
+        running = False
     
     pygame.display.update()
+
+msg = game_font.render(game_result, True, (255,255,0))
+msg_rect = msg.get_rect(center=(int(screen_width /2),screen_height /2))
+screen.blit(msg, msg_rect)
+pygame.display.update()
+
 
 pygame.time.delay(1000)
 # pygame 종료
